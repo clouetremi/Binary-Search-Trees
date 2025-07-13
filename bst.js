@@ -40,6 +40,9 @@ class Tree {
     this.root = this._insertRec(this.root, value);
   }
 
+  // le _ est une convention pour indiquer que c'est une méthode privée/interne
+  // Elle ne doit pas être appelée direct depuis l'extérieur de la classe
+  // Elle est utilisée uniquement en interne pour aider à une tâche complexe
   _insertRec(root, key) {
     if (root === null) {
       return new Node(key);
@@ -65,6 +68,48 @@ class Tree {
       console.log(root.key);
       this.inorder(root.right);
     }
+  }
+
+  getSuccessor(curr) {
+    curr = curr.right;
+    while (curr !== null && curr.left !== null) {
+      curr = curr.left;
+    }
+    return curr;
+  }
+
+  deleteItem(value) {
+    this.root = this._deleteItemRec(this.root, value);
+  }
+
+  _deleteItemRec(this.root, key) {
+    // Base case 
+    if (root === null) {
+      return root;
+    }
+
+    if (root.key > key) {
+      root.left = this.deleteItemRec(root.left, key);
+    } else if (root.key < key) {
+      root.right = this.deleteItemRec(root.right, key);
+    } else {
+      // If root martches with the given key
+
+      // Cases when root has 0 children or 
+      // only right child
+      if (root.left === null)
+        return root.right;
+
+      // When root has only left child
+      if (root.right === null)
+        return root.left;
+
+      // When both children are present 
+      let succ = this.getSuccessor(root);
+      root.key = succ.key;
+      root.right = this.deleteItemRec(root.right, succ.key)
+    }
+    return root;
   }
 };
 
