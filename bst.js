@@ -111,6 +111,52 @@ class Tree {
     }
     return root;
   }
+
+  find(value) {
+    this.root = this._findRec(this.root, value)
+  }
+
+  _findRec(node, value) {
+
+    if (node === null)
+      return null; *
+
+    if (value < node.key) {
+      return this._findRec(node.left, value);
+    } else if (value > node.key) {
+      return this._findRec(node.right, value); 
+    }  else {
+      return node; 
+    }
+  } 
+
+  levelOrderForEach(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A callback function is required for levelOrderForEach.");
+    }
+
+    if (!this.root) {
+      return; 
+    }
+
+    const queue = [this.root]; 
+
+    while (queue.length > 0) {
+      const node = queue.shift(); // retire le premier élément de la queue
+      callback(node); 
+
+      if (node.left) {
+        queue.push(node.left);
+      }
+      if (node.right) {
+        queue.push(node.right)
+      }
+    }
+  }
+
+
+
+
 };
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
